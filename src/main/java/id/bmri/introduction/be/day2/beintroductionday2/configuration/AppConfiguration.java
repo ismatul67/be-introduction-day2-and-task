@@ -1,6 +1,5 @@
 package id.bmri.introduction.be.day2.beintroductionday2.configuration;
 
-import id.bmri.introduction.be.day2.beintroductionday2.Service.StudentServiceImpl;
 import id.bmri.introduction.be.day2.beintroductionday2.model.response.StudentDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,7 @@ public class AppConfiguration {
 
     @Bean(name = "student")
     public StudentDto studentDto() {
-        return new StudentDto((long) 1, 12, "Science",true, new Date(), 23, "Isma");
+        return new StudentDto((long) 1, 12, "Science",false, new Date(), 23, "Isma");
     }
 
     @Bean(name="students")
