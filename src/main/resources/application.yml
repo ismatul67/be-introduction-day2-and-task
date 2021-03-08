@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name:
+    url : jdbc:mysql://localhost:3306/ddl_induction
+    username: root
+    password:
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
