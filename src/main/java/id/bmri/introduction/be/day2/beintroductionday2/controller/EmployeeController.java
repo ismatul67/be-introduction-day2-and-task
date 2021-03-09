@@ -2,12 +2,10 @@ package id.bmri.introduction.be.day2.beintroductionday2.controller;
 
 import id.bmri.introduction.be.day2.beintroductionday2.Service.EmployeeService;
 import id.bmri.introduction.be.day2.beintroductionday2.model.entity.Employee;
+import id.bmri.introduction.be.day2.beintroductionday2.model.request.EmployeeRequestUpdate;
 import id.bmri.introduction.be.day2.beintroductionday2.util.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +67,35 @@ public class EmployeeController {
         }else {
             return employeeService.getEmployeesByJobTitle(jobTitle);
         }
+    }
+
+    @GetMapping("v1/list-employee-with-salary-equal-min")
+    public List<Employee> getEmployeeWhereSalaryEqualJobMinSalary (){
+    return employeeService.getEmployeeWhereSalaryEqualJobMinSalary();
+    }
+
+    @DeleteMapping("v1/delete/{id}")
+    public ResponseEntity<Response> deleteEmployee(@PathVariable Integer id){
+        Response response;
+        if (employeeService.deleteEmployee(id)){
+            response = new Response(null, "Success delete data employee", true);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        response = new Response(null, "Failed delete data employee", false);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("v1/update")
+    public ResponseEntity<Response> deleteEmployee(@RequestBody EmployeeRequestUpdate employeeRequest){
+        Response response;
+       if (employeeRequest.getEmployeeId()!=null){
+           if (employeeService.updateEmployee(employeeRequest)){
+               response = new Response(null, "Success update data employee", true);
+               return new ResponseEntity<>(response, HttpStatus.OK);
+           }
+       }
+        response = new Response(null, "Failed update data employee", false);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     private Specification<Employee> getSpecs(String jobId, Integer managerId) {

@@ -1,8 +1,7 @@
 package id.bmri.introduction.be.day2.beintroductionday2.Service;
 
 import id.bmri.introduction.be.day2.beintroductionday2.model.entity.Employee;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import id.bmri.introduction.be.day2.beintroductionday2.model.request.EmployeeRequestUpdate;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
@@ -17,6 +16,9 @@ public interface EmployeeService {
     public List<Employee> getEmployeesByJobsIdAndSalary(String jobId, BigDecimal Salary);
     public List<Employee> getEmployeesByJobsIdAndManagerId(Specification<Employee> specs);
     public List<Employee> getEmployeesByJobTitle(String jobTitle);
+    public List<Employee> getEmployeeWhereSalaryEqualJobMinSalary();
+    public boolean deleteEmployee(Integer id);
+    public boolean updateEmployee(EmployeeRequestUpdate employeeRequest);
 
 
 }

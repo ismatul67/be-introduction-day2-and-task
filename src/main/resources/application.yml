@@ -1,11 +1,12 @@
 spring:
   datasource:
-    driver-class-name:
-    url : jdbc:mysql://localhost:3306/ddl_induction
-    username: root
-    password:
+    driverClassName: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:system/oracle@10.243.136.57:1521:Eversbox
+    username: DDL_INDUCTION
+    password: DDL_INDUCTION
+
   jpa:
     properties:
-      hibernate.dialect: org.hibernate.dialect.MySQLDialect
+      hibernate.dialect: org.hibernate.dialect.Oracle12cDialect
     hibernate:
       ddl-auto: update

@@ -2,10 +2,11 @@ package id.bmri.introduction.be.day2.beintroductionday2.Service.impl;
 
 import id.bmri.introduction.be.day2.beintroductionday2.Service.EmployeeService;
 import id.bmri.introduction.be.day2.beintroductionday2.model.entity.Employee;
+import id.bmri.introduction.be.day2.beintroductionday2.model.request.EmployeeRequestUpdate;
 import id.bmri.introduction.be.day2.beintroductionday2.repository.EmployeeRepository;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -57,5 +58,37 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> getEmployeesByJobTitle(String jobTitle) {
         return employeeRepository.findAllByJobTitle(jobTitle.toLowerCase());
+    }
+
+    @Override
+    public List<Employee> getEmployeeWhereSalaryEqualJobMinSalary() {
+        return employeeRepository.getEmployeeWhereSalaryEqualJobMinSalary();
+    }
+
+    @Override
+    public boolean deleteEmployee(Integer id) {
+        try {
+            employeeRepository.deleteById(id);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean updateEmployee(EmployeeRequestUpdate employeeRequest) {
+        Employee employee = this.getEmployeeById(employeeRequest.getEmployeeId()).get();
+
+        if (ObjectUtils.isNotEmpty(employee)){
+            if (StringUtils.isNotEmpty(employeeRequest.getFirstName())) employee.setFirstName(employeeRequest.getFirstName());
+            if (StringUtils.isNotEmpty(employeeRequest.getLastName())) employee.setLastName(employeeRequest.getLastName());
+            if (StringUtils.isNotEmpty(employeeRequest.getEmail())) employee.setEmail(employeeRequest.getEmail());
+            if (StringUtils.isNotEmpty(employeeRequest.getPhoneNumber())) employee.setPhoneNumber(employeeRequest.getPhoneNumber());
+            employeeRepository.save(employee);
+            return true;
+        }else{
+            return false;
+        }
     }
 }

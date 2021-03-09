@@ -30,4 +30,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> , J
     @Query(nativeQuery = true, value = "select e.* from Employees e inner join jobs j on j.job_id=e.job_id where lower(job_title)= :jobTitle")
     List<Employee> findAllByJobTitle(String jobTitle);
 
+    @Query(nativeQuery = true, value = "SELECT e.* FROM EMPLOYEES e LEFT JOIN JOBS j ON e.JOB_ID = j.JOB_ID WHERE e.SALARY = j.MIN_SALARY")
+    List<Employee> getEmployeeWhereSalaryEqualJobMinSalary();
+
 }
