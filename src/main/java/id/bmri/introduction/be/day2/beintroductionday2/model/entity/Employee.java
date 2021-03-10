@@ -36,11 +36,14 @@ public class Employee {
     private String jobId;
 
     @Column(name="salary")
-    private BigDecimal salary;
+    private Integer salary;
 
     @Column(name="commission_pct")
     private BigDecimal commission_pct;
 
     @Column(name="manager_id")
     private Integer managerId;
+
+    @Column(name="department_id")
+    private Integer departmentId;
 }

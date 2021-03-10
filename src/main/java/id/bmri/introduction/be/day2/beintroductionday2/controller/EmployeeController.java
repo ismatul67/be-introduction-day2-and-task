@@ -3,6 +3,7 @@ package id.bmri.introduction.be.day2.beintroductionday2.controller;
 import id.bmri.introduction.be.day2.beintroductionday2.Service.EmployeeService;
 import id.bmri.introduction.be.day2.beintroductionday2.model.entity.Employee;
 import id.bmri.introduction.be.day2.beintroductionday2.model.request.EmployeeRequestUpdate;
+import id.bmri.introduction.be.day2.beintroductionday2.model.response.EmployeeDto;
 import id.bmri.introduction.be.day2.beintroductionday2.util.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Predicate;
+import java.awt.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequestMapping("api/employee")
 @RestController
@@ -105,5 +109,35 @@ public class EmployeeController {
                 predicateTexts.add(criteriaBuilder.equal(root.get("managerId"), managerId));
             return criteriaBuilder.and(predicateTexts.toArray(new Predicate[] {}));
         });
+    }
+
+    @GetMapping("/v1/stream/filter")
+    public  List<Employee> findAllStream(@RequestParam Integer salary){
+        return employeeService.getEmployees().stream().filter(e -> e.getSalary() > salary).collect(Collectors.toList());
+    }
+
+    @GetMapping("v1/stream/sort")
+    public  List<Employee> findAllStreamSorted(){
+        return employeeService.getEmployees().stream().sorted(Comparator.comparing(Employee::getLastName).reversed()).collect(Collectors.toList());
+    }
+
+    @GetMapping("/v1/stream/fiter-sort-collect")
+    public  List<Employee> findAllStreamFilterSortCollect(@RequestParam Integer salary){
+        return employeeService.getEmployees().stream().filter(e -> e.getSalary() > salary).sorted().collect(Collectors.toList());
+    }
+
+    @GetMapping("/v1/stream/map/builder")
+    public List<EmployeeDto> findAllStreamBuilder(){
+        return  employeeService.getEmployees().stream().map(e -> EmployeeDto.builder().fullName(e.getFirstName() + " "+ e.getLastName()).build()).collect(Collectors.toList());
+    }
+
+    @GetMapping("/v1/stream/find-first")
+    public  Employee findAllStreamFindFirst(@RequestParam Integer length){
+        return employeeService.getEmployees().stream().filter(e -> e.getFirstName().length() >  length).findFirst().get();
+    }
+
+    @GetMapping("/v1/stream/any-match")
+    public boolean findAllAnyMatch(){
+        return employeeService.getEmployees().stream().anyMatch(e -> e.getDepartmentId() == null);
     }
 }
